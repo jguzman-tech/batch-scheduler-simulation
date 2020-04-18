@@ -1,0 +1,13 @@
+* CEA dataset
+https://www.sciencedirect.com/science/article/pii/S2352340919313629?via%3Dihub
+[[docview:1-s2.0-S2352340919313629-main.pdf::1][1-s2.0-S2352340919313629-main.pdf]]
+* IMPORTANT
+Fields 10,16,17,18 are always -1 because they are "unavailable". These
+correspond to mem_req, partition, prior_job, and think_time.
+
+Fields 13 and 14 are -1 when the owner cannot be identified, these are always failed
+jobs. But apparently this only happens when there is a system failure. These
+correspond to gid and executable.
+* I need a global timer
+Do not add a job to the job queue if the global time is less than the submit
+time, everything should already be in the order of submit time.

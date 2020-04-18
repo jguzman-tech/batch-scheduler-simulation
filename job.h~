@@ -1,0 +1,6 @@
+class job {
+public:
+  int job_number, submit_time, wait_time, run_time, processors_used;
+  int avg_cpu_time, avg_mem_used, processors_req, time_req, mem_req, status;
+  int uid, gid, executable, queue_n, partition, prior_job, think_time;
+};

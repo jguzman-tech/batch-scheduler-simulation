@@ -1,0 +1,6 @@
+#include <queue>
+using std::queue;
+
+int main(int argc, char** argv) {
+  return 0;
+}

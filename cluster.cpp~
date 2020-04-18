@@ -1,0 +1,21 @@
+#include "cluster.h"
+#include <iostream>
+using std::cout;
+using std::endl;
+
+cluster::cluster(unsigned int num_processors) {
+  this->num_processors = num_processors;
+  this->processors = new unsigned int[this->num_processors];
+}
+
+void cluster::add_job(job new_job) {
+  this->job_queue.push(new_job);
+}
+
+void cluster::run_scheduler() {
+  
+}
+
+cluster::~cluster() {
+  delete this->processors;
+}
