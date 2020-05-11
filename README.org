@@ -1,0 +1,15 @@
+* Purpose
+This program will simulate several different batch scheduling algorithms using
+the CIEMAT dataset. This is a project as part of my High Performance Computing
+class at NAU.
+* Compilation
+This program was compiled and tested using both g++ 7.5.0 and g++ 6.2.0
+(available on Monsoon via "load module gcc/6.2.0").
+
+A makefile is provided in this repo.
+* Execution
+Usage: ./a.out <data-file> <number-of-jobs> <algorithm>
+        <data-file>: the path of the CEA-Curie-2011-2.swf dataset
+        <number-of-jobs>: the number of jobs to read from the SWF file
+        <algorithm>: three algorithms are supported {FCFS, SJF, and LJF}
+        FCFS --> First Come First Serve, SJF --> Shortest Job First, LJF --> Longest Job First
