@@ -8,17 +8,37 @@ using std::istringstream;
 #include <stdexcept>
 using std::runtime_error;
 #include "job.h"
+#include <string>
+using std::string;
 #include "cluster.h"
 
 
 int main(int argc, char** argv) {
   char line[120];
   ifstream file(argv[1]);
+  unsigned int limit = atoi(argv[2]);
+  string algorithm = string(argv[3]);
+  cout << "algorithm = !" << algorithm << "!" << endl;
+  
   unsigned int num_jobs = 0;
   unsigned int num_valid_jobs = 0;
-  unsigned int global_clock = -1;
 
-  cluster system(480);
+  cluster* system;
+
+  if(algorithm.compare("FCFS") == 0) {
+    system = new cluster(cluster::algorithm::FCFS, 480);
+  }
+  else if(algorithm.compare("SJF") == 0) {
+    system = new cluster(cluster::algorithm::SJF, 480);
+  }
+  else if(algorithm.compare("LJF") == 0) {
+    system = new cluster(cluster::algorithm::LJF, 480);
+  }
+  else {
+    cout << "unknown algorithm selection" << endl;
+    exit(1);
+  }
+  unsigned int count = 0;
   
   if(file.is_open()) {
     while(file.getline(line, sizeof(line))) {
@@ -26,6 +46,9 @@ int main(int argc, char** argv) {
 	// line is a comment, do nothing
       }
       else {
+	if(count > limit) {
+	  break;
+	}
 	// this may only work for the CIEMAT logs
 	istringstream iss(line);
 	int values[18];
@@ -67,23 +90,27 @@ int main(int argc, char** argv) {
 	// cout << ", queue_n = " << queue_n << ", partition = " << partition;
 	// cout << ", prior_job = " << prior_job << ", think_time = ";
 	// cout << think_time << endl;
-	if(runtime != -1 && time_req != -1 && submit_time != -1 && processors_req != -1 && processors_req <= 480) {
-	  cout << "job #" << job_number << endl;
-	  cout << "runtime = " << runtime << endl;
-	  job new_job(runtime, time_req, submit_time, processors_req);
-	  system.add_job(new_job);
+
+	if(runtime >= 0 && time_req >= 0 && submit_time >= 0 &&
+	   processors_req >= 0 && processors_req <= 480) {
+	  job new_job(runtime, time_req, submit_time, processors_req);	  
+	  system->add_job(new_job);
 	  num_valid_jobs++;
 	}
       }
+      count++;
     }
     file.close();
   }
   else {
     throw runtime_error("unable to open file");
   }
+  system->drain();
+  cout << "after draining: global_clock = " << system->global_clock << endl;
   cout << "num_jobs = " << num_jobs << endl;
   cout << "num_valid_jobs = " << num_valid_jobs << endl;
-  cout << "remaining jobs: " << system.job_queue.size() << endl;
-  cout << "available: : " << system.get_available_processors() << endl;
+  cout << "sceduled_jobs = " << system->get_jobs_scheduled() << endl;
+  cout << "avg_cpu_util = " << system->get_avg_cpu_util() << endl;
+  cout << "avg_latency = " << system->get_avg_latency() << endl;
   return 0;
 }

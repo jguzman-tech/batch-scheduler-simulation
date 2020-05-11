@@ -1,14 +1,19 @@
 #include <queue>
 using std::queue;
+#include <deque>
+using std::deque;
 #include <iostream>
 using std::cout;
 using std::endl;
+#include <algorithm>
+using std::min_element;
 
 int main(int argc, char** argv) {
-  queue<int> my_queue;
-  my_queue.push(1);
-  my_queue.push(2);
-  cout << "front: " << my_queue.front() << endl;
-  cout << "front: " << my_queue.front() << endl;
+  deque<int> x;
+  x.push(5);
+  x.push(10);
+  x.push(0);
+  x.push(11);
+  cout << min_element(x.begin(), x.end()) << endl;
   return 0;
 }
