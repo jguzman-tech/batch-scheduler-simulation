@@ -14,11 +14,20 @@ using std::string;
 
 
 int main(int argc, char** argv) {
+  if(argc != 4) {
+    cout << "Usage: ./a.out <data-file> <number-of-jobs> <algorithm>" << endl;
+    cout << "\t<data-file>: the path of the CEA-Curie-2011-2.swf dataset" << endl;
+    cout << "\t<number-of-jobs>: the number of jobs to read from the SWF file" << endl;
+    cout << "\t<algorithm>: three algorithms are supported {FCFS, SJF, and LJF}" << endl;
+    cout << "\tFCFS --> First Come First Serve, SJF --> Shortest Job First, ";
+    cout << "LJF --> Longest Job First" << endl;
+    return 1;
+  }
+  
   char line[120];
   ifstream file(argv[1]);
   unsigned int limit = atoi(argv[2]);
   string algorithm = string(argv[3]);
-  cout << "algorithm = !" << algorithm << "!" << endl;
   
   unsigned int num_jobs = 0;
   unsigned int num_valid_jobs = 0;
